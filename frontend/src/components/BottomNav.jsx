@@ -75,7 +75,7 @@ export default function BottomNav() {
 
         {/* 로그인/프로필 */}
         <NavLink
-          to={user ? '#' : '/login'}
+          to={user ? '.' : '/login'}
           className={({ isActive }) =>
             `flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl transition-colors
              ${isActive ? 'text-beige-500 dark:text-navy-300' : 'text-gray-400 dark:text-gray-500'}`

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import CategoryFilter from '../components/CategoryFilter';
 import NewsCard from '../components/NewsCard';
 import NewsCardSkeleton from '../components/NewsCardSkeleton';
@@ -8,8 +9,9 @@ import { newsApi } from '../services/api';
 const DEFAULT_CATEGORIES = [{ id: 'all', name: '전체' }];
 
 export default function Home() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [categories, setCategories]   = useState(DEFAULT_CATEGORIES);
-  const [activeCategory, setActive]   = useState('all');
+  const activeCategory = searchParams.get('category') || 'all';
   const [news, setNews]               = useState([]);
   const [loading, setLoading]         = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -97,8 +99,12 @@ export default function Home() {
 
   // 카테고리 변경 핸들러
   function handleCategoryChange(cat) {
-    if (cat === activeCategory) return; // 같은 카테고리 클릭 무시
-    setActive(cat);
+    if (cat === activeCategory) return;
+    if (cat === 'all') {
+      setSearchParams({});
+    } else {
+      setSearchParams({ category: cat });
+    }
   }
 
   return (

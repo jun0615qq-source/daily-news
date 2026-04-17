@@ -19,6 +19,7 @@
     "helmet": "^7.1.0",
     "morgan": "^1.10.0",
     "node-cache": "^5.1.2",
+    "nodemailer": "^8.0.5",
     "rss-parser": "^3.13.0"
   },
   "devDependencies": {

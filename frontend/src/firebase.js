@@ -3,6 +3,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signInWithCustomToken,
   signOut,
   onAuthStateChanged,
   updateProfile,
@@ -10,6 +11,8 @@ import {
   sendPasswordResetEmail,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
 } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
@@ -40,10 +43,13 @@ export {
   googleProvider,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signInWithCustomToken,
   signOut,
   onAuthStateChanged,
   updateProfile,
   sendEmailVerification,
   sendPasswordResetEmail,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
 };

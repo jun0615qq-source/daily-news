@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth, isWebView, openInExternalBrowser } from '../context/AuthContext';
 
 export default function Login() {
   const { login, loginWithGoogle, resetPassword } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
+  const inWebView = isWebView();
 
   const [form, setForm]           = useState({ email: '', password: '' });
   const [error, setError]         = useState('');
@@ -28,10 +29,11 @@ export default function Login() {
       navigate(from, { replace: true });
     } catch (err) {
       const map = {
-        'auth/user-not-found':  '등록되지 않은 이메일입니다.',
-        'auth/wrong-password':  '비밀번호가 올바르지 않습니다.',
-        'auth/too-many-requests': '너무 많은 시도로 일시 차단되었습니다. 잠시 후 다시 시도하세요.',
+        'auth/user-not-found':     '등록되지 않은 이메일입니다.',
+        'auth/wrong-password':     '비밀번호가 올바르지 않습니다.',
+        'auth/too-many-requests':  '너무 많은 시도로 일시 차단되었습니다. 잠시 후 다시 시도하세요.',
         'auth/invalid-credential': '이메일 또는 비밀번호를 확인하세요.',
+        'auth/email-not-verified': '이메일 인증이 완료되지 않았습니다. 받은 편지함을 확인해 주세요.',
       };
       setError(map[err.code] || '로그인에 실패했습니다.');
     } finally {
@@ -40,6 +42,10 @@ export default function Login() {
   }
 
   async function handleGoogle() {
+    if (isWebView()) {
+      openInExternalBrowser();
+      return;
+    }
     setLoading(true);
     try {
       await loginWithGoogle();
@@ -65,7 +71,6 @@ export default function Login() {
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
-        {/* 카드 */}
         <div className="bg-white dark:bg-navy-800 rounded-3xl shadow-xl p-8 border border-beige-200 dark:border-navy-700 animate-slide-up">
           {/* 헤더 */}
           <div className="text-center mb-8">
@@ -76,7 +81,7 @@ export default function Login() {
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">데일리 뉴스에 오신 것을 환영합니다</p>
           </div>
 
-          {/* 구글 로그인 */}
+          {/* 구글 로그인 — WebView에서 누르면 외부 브라우저로 자동 이동 */}
           <button
             onClick={handleGoogle}
             disabled={loading}
@@ -94,7 +99,6 @@ export default function Login() {
             </svg>
             Google로 로그인
           </button>
-
           <div className="relative mb-5">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-beige-200 dark:border-navy-700" />
@@ -104,7 +108,7 @@ export default function Login() {
             </div>
           </div>
 
-          {/* 오류 메시지 */}
+          {/* 오류 / 성공 메시지 */}
           {error && (
             <div className="mb-4 p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
               <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
@@ -166,7 +170,6 @@ export default function Login() {
             </button>
           </form>
 
-          {/* 회원가입 링크 */}
           <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
             계정이 없으신가요?{' '}
             <Link to="/register" className="font-semibold text-beige-600 dark:text-navy-300 hover:underline">

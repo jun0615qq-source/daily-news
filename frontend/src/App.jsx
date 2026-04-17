@@ -1,5 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { AuthProvider, useAuth, isWebView } from './context/AuthContext';
 import useAnalytics from './hooks/useAnalytics';
 import { ThemeProvider } from './context/ThemeContext';
 import Header from './components/Header';
@@ -24,6 +24,15 @@ function PublicOnlyRoute({ children }) {
   return user ? <Navigate to="/" replace /> : children;
 }
 
+function WebViewBanner() {
+  if (!isWebView()) return null;
+  return (
+    <div className="bg-amber-500 text-white text-xs px-4 py-2 text-center">
+      카카오톡에서는 이메일로 회원가입/로그인해 주세요
+    </div>
+  );
+}
+
 function AppInner() {
   useAnalytics();
   return null;
@@ -41,6 +50,9 @@ export default function App() {
 
             {/* 상단 헤더 */}
             <Header />
+
+            {/* 카카오톡 인앱 브라우저 경고 */}
+            <WebViewBanner />
 
             {/* 오프라인 배너 */}
             <OfflineBanner />

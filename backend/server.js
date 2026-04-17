@@ -52,6 +52,7 @@ if (process.env.NODE_ENV !== 'test') {
 app.use('/api/', apiLimiter);
 
 // ── 라우터 ────────────────────────────────────────────────────────────────────
+app.use('/api/auth', require('./src/routes/auth'));
 app.use('/api/news', require('./src/routes/news'));
 
 // ── 헬스체크 ──────────────────────────────────────────────────────────────────
