@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import useAnalytics from './hooks/useAnalytics';
 import { ThemeProvider } from './context/ThemeContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -23,12 +24,20 @@ function PublicOnlyRoute({ children }) {
   return user ? <Navigate to="/" replace /> : children;
 }
 
+function AppInner() {
+  useAnalytics();
+  return null;
+}
+
 export default function App() {
   return (
     <BrowserRouter>
       <ThemeProvider>
         <AuthProvider>
           <div className="min-h-screen flex flex-col bg-beige-100 dark:bg-navy-900 transition-colors duration-300">
+
+            {/* Google Analytics 페이지뷰 추적 */}
+            <AppInner />
 
             {/* 상단 헤더 */}
             <Header />
