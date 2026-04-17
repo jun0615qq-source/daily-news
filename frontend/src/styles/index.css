@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── 베이스 ──────────────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-beige-100 text-gray-900 font-sans antialiased transition-colors duration-300;
+  }
+
+  .dark body {
+    @apply bg-navy-900 text-gray-100;
+  }
+
+  /* 다크모드 전환 */
+  .dark {
+    color-scheme: dark;
+  }
+}
+
+/* ── 컴포넌트 ────────────────────────────────────────────────────────────── */
+@layer components {
+  /* 뉴스 카드 */
+  .news-card {
+    @apply bg-white dark:bg-navy-700 rounded-2xl shadow-md hover:shadow-xl
+           transition-all duration-300 overflow-hidden cursor-pointer
+           border border-beige-200 dark:border-navy-600
+           hover:-translate-y-1;
+  }
+
+  /* 버튼 기본 */
+  .btn-primary {
+    @apply bg-beige-500 hover:bg-beige-600 dark:bg-navy-400 dark:hover:bg-navy-300
+           text-white font-medium px-6 py-2.5 rounded-xl
+           transition-colors duration-200 focus:outline-none focus:ring-2
+           focus:ring-beige-500 dark:focus:ring-navy-400 focus:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply bg-white dark:bg-navy-800 hover:bg-beige-100 dark:hover:bg-navy-700
+           text-gray-700 dark:text-gray-200 font-medium px-6 py-2.5 rounded-xl
+           border border-beige-300 dark:border-navy-600
+           transition-colors duration-200 focus:outline-none focus:ring-2
+           focus:ring-beige-400 dark:focus:ring-navy-500 focus:ring-offset-2;
+  }
+
+  /* 입력 필드 */
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl border border-beige-300 dark:border-navy-600
+           bg-white dark:bg-navy-800 text-gray-900 dark:text-gray-100
+           placeholder-gray-400 dark:placeholder-gray-500
+           focus:outline-none focus:ring-2 focus:ring-beige-500 dark:focus:ring-navy-400
+           transition-colors duration-200;
+  }
+
+  /* 카테고리 칩 */
+  .category-chip {
+    @apply px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap
+           transition-all duration-200 cursor-pointer;
+  }
+
+  .category-chip-active {
+    @apply bg-beige-500 dark:bg-navy-400 text-white;
+  }
+
+  .category-chip-inactive {
+    @apply bg-white dark:bg-navy-800 text-gray-600 dark:text-gray-300
+           border border-beige-300 dark:border-navy-600
+           hover:bg-beige-100 dark:hover:bg-navy-700;
+  }
+
+  /* AdSense 배너 */
+  .ad-banner {
+    @apply w-full rounded-xl overflow-hidden bg-beige-50 dark:bg-navy-800
+           border border-dashed border-beige-300 dark:border-navy-600
+           flex items-center justify-center text-gray-400 dark:text-gray-600
+           text-xs min-h-[90px];
+  }
+
+  /* 스켈레톤 */
+  .skeleton {
+    @apply animate-pulse bg-beige-200 dark:bg-navy-700 rounded-lg;
+  }
+}
+
+/* ── 스크롤바 ────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { @apply bg-beige-100 dark:bg-navy-900; }
+::-webkit-scrollbar-thumb { @apply bg-beige-400 dark:bg-navy-500 rounded-full; }
+::-webkit-scrollbar-thumb:hover { @apply bg-beige-500 dark:bg-navy-400; }
+
+/* ── 카테고리 가로 스크롤 숨김 ───────────────────────────────────────────── */
+.category-scroll { scrollbar-width: none; }
+.category-scroll::-webkit-scrollbar { display: none; }
+
+/* ── iOS Safe Area (노치/홈 바 대응) ─────────────────────────────────────── */
+.pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+.pt-safe { padding-top:    env(safe-area-inset-top,    0px); }
+
+/* ── 터치 최적화 ─────────────────────────────────────────────────────────── */
+button, a, [role="button"] {
+  /* 모바일 탭 하이라이트 제거 */
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* 모바일에서 뉴스 카드 탭 효과 */
+@media (max-width: 640px) {
+  .news-card:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+}
+
+/* ── 모바일 입력 필드 — 자동 확대 방지 ──────────────────────────────────── */
+@media (max-width: 640px) {
+  input, select, textarea {
+    font-size: 16px !important; /* 16px 미만이면 iOS가 자동 줌인 */
+  }
+}
+
+/* ── 오프라인 배너 ───────────────────────────────────────────────────────── */
+.offline-banner {
+  @apply fixed top-0 left-0 right-0 z-[100] bg-orange-500 text-white
+         text-center text-sm py-2 px-4 font-medium;
+}
+
+/* ── 풀스크린 로딩 스피너 ────────────────────────────────────────────────── */
+.spinner {
+  @apply w-8 h-8 border-4 border-beige-200 dark:border-navy-700
+         border-t-beige-500 dark:border-t-navy-400 rounded-full animate-spin;
+}

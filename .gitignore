@@ -1,0 +1,25 @@
+# 의존성 패키지 (용량 크고 npm install로 복원 가능)
+node_modules/
+*/node_modules/
+
+# 환경 변수 (개인 정보 포함)
+.env
+*/.env
+frontend/.env
+backend/.env
+
+# 빌드 결과물
+frontend/dist/
+frontend/.vite/
+
+# 로그
+*.log
+npm-debug.log*
+
+# 운영체제
+.DS_Store
+Thumbs.db
+
+# 에디터
+.vscode/
+.idea/
