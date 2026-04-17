@@ -11,6 +11,7 @@ import Home from './pages/Home';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Privacy from './pages/Privacy';
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
@@ -45,6 +46,7 @@ export default function App() {
                 <Route path="/landing"  element={<PublicOnlyRoute><Landing /></PublicOnlyRoute>} />
                 <Route path="/login"    element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/privacy"  element={<Privacy />} />
                 <Route path="*" element={
                   <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
                     <p className="text-6xl font-black text-beige-300 dark:text-navy-700">404</p>
