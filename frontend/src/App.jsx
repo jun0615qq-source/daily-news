@@ -1,5 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -8,8 +8,19 @@ import InstallPrompt from './components/InstallPrompt';
 import UpdateToast from './components/UpdateToast';
 import OfflineBanner from './components/OfflineBanner';
 import Home from './pages/Home';
+import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
+
+function ProtectedRoute({ children }) {
+  const { user } = useAuth();
+  return user ? children : <Navigate to="/landing" replace />;
+}
+
+function PublicOnlyRoute({ children }) {
+  const { user } = useAuth();
+  return user ? <Navigate to="/" replace /> : children;
+}
 
 export default function App() {
   return (
@@ -30,7 +41,8 @@ export default function App() {
             {/* 메인 콘텐츠 — 모바일은 하단 네비 높이만큼 패딩 */}
             <div className="flex-1 pb-16 md:pb-0">
               <Routes>
-                <Route path="/"         element={<Home />} />
+                <Route path="/"         element={<ProtectedRoute><Home /></ProtectedRoute>} />
+                <Route path="/landing"  element={<PublicOnlyRoute><Landing /></PublicOnlyRoute>} />
                 <Route path="/login"    element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="*" element={

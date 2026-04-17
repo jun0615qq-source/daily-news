@@ -68,11 +68,21 @@ export default function NewsCard({ news }) {
           {news.title}
         </h2>
 
-        {/* 요약 */}
+        {/* 요약 (개조식 bullet) */}
         {news.summary && (
-          <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-3 mb-4">
-            {news.summary}
-          </p>
+          <ul className="mb-4 space-y-1.5">
+            {news.summary
+              .split(/(?<=[.!?])\s+|(?<=\。)\s*/)
+              .map(s => s.trim())
+              .filter(s => s.length > 5)
+              .slice(0, 3)
+              .map((pt, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400 leading-snug">
+                  <span className="text-beige-500 dark:text-navy-300 font-bold mt-0.5 shrink-0">•</span>
+                  <span>{pt.replace(/[.!?。]$/, '')}</span>
+                </li>
+              ))}
+          </ul>
         )}
 
         {/* 하단: 출처 + 날짜 */}
