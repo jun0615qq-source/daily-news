@@ -19,10 +19,20 @@ app.use(helmet({
 }));
 
 // ── CORS ──────────────────────────────────────────────────────────────────────
-const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173').split(',');
+const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173')
+  .split(',').map(o => o.trim());
+
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    // 오리진 없음 (curl, 서버간 요청 등) → 허용
+    if (!origin) return callback(null, true);
+    // 명시적으로 등록된 도메인
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    // Vercel 프리뷰/배포 도메인 전체 허용 (*.vercel.app)
+    if (origin.endsWith('.vercel.app')) return callback(null, true);
+    // 로컬 개발 환경
+    if (/^http:\/\/localhost:\d+$/.test(origin)) return callback(null, true);
+
     callback(new Error('CORS 정책에 의해 차단되었습니다.'));
   },
   credentials: true,
