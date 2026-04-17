@@ -1,5 +1,5 @@
 // ── 캐시 버전 (배포 때마다 올려주면 구버전 자동 삭제) ──────────────────────
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
 const STATIC_CACHE  = `daily-news-static-${CACHE_VERSION}`;
 const NEWS_CACHE    = `daily-news-news-${CACHE_VERSION}`;
 const IMAGE_CACHE   = `daily-news-images-${CACHE_VERSION}`;
