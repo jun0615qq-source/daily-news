@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth, isWebView } from './context/AuthContext';
 import useAnalytics from './hooks/useAnalytics';
 import { ThemeProvider } from './context/ThemeContext';
@@ -9,20 +9,11 @@ import InstallPrompt from './components/InstallPrompt';
 import UpdateToast from './components/UpdateToast';
 import OfflineBanner from './components/OfflineBanner';
 import Home from './pages/Home';
-import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Privacy from './pages/Privacy';
-
-function ProtectedRoute({ children }) {
-  const { user } = useAuth();
-  return user ? children : <Navigate to="/landing" replace />;
-}
-
-function PublicOnlyRoute({ children }) {
-  const { user } = useAuth();
-  return user ? <Navigate to="/" replace /> : children;
-}
+import About from './pages/About';
+import Terms from './pages/Terms';
 
 function WebViewBanner() {
   if (!isWebView()) return null;
@@ -63,11 +54,13 @@ export default function App() {
             {/* 메인 콘텐츠 — 모바일은 하단 네비 높이만큼 패딩 */}
             <div className="flex-1 pb-16 md:pb-0">
               <Routes>
-                <Route path="/"         element={<ProtectedRoute><Home /></ProtectedRoute>} />
-                <Route path="/landing"  element={<PublicOnlyRoute><Landing /></PublicOnlyRoute>} />
+                <Route path="/"         element={<Home />} />
+                <Route path="/landing"  element={<Navigate to="/" replace />} />
                 <Route path="/login"    element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/privacy"  element={<Privacy />} />
+                <Route path="/about"    element={<About />} />
+                <Route path="/terms"    element={<Terms />} />
                 <Route path="*" element={
                   <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
                     <p className="text-6xl font-black text-beige-300 dark:text-navy-700">404</p>

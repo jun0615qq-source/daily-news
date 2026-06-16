@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
+import ContactModal from './ContactModal';
 
 export default function Header() {
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
 
   async function handleLogout() {
     await logout();
@@ -30,6 +32,12 @@ export default function Header() {
             <span className="hidden sm:inline text-xs text-gray-400 dark:text-gray-500 ml-1">Daily News</span>
           </div>
         </Link>
+
+        {/* 가운데 네비 */}
+        <nav className="hidden md:flex items-center gap-6 text-sm text-gray-500 dark:text-gray-400">
+          <Link to="/" className="hover:text-beige-600 dark:hover:text-navy-300 transition-colors">홈</Link>
+          <Link to="/about" className="hover:text-beige-600 dark:hover:text-navy-300 transition-colors">소개</Link>
+        </nav>
 
         {/* 오른쪽 액션 */}
         <div className="flex items-center gap-2">
@@ -81,6 +89,12 @@ export default function Header() {
                     {user.email}
                   </div>
                   <button
+                    onClick={() => { setContactOpen(true); setMenuOpen(false); }}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-beige-50 dark:hover:bg-navy-700 transition-colors"
+                  >
+                    문의 사항
+                  </button>
+                  <button
                     onClick={handleLogout}
                     className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-navy-700 transition-colors"
                   >
@@ -88,6 +102,8 @@ export default function Header() {
                   </button>
                 </div>
               )}
+
+              {contactOpen && <ContactModal onClose={() => setContactOpen(false)} />}
             </div>
           ) : (
             <div className="flex items-center gap-2">

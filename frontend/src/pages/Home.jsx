@@ -1,14 +1,16 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import CategoryFilter from '../components/CategoryFilter';
 import NewsCard from '../components/NewsCard';
 import NewsCardSkeleton from '../components/NewsCardSkeleton';
 import AdBanner from '../components/AdBanner';
 import { newsApi } from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
 const DEFAULT_CATEGORIES = [{ id: 'all', name: '전체' }];
 
 export default function Home() {
+  const { user } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const [categories, setCategories]   = useState(DEFAULT_CATEGORIES);
   const activeCategory = searchParams.get('category') || 'all';
@@ -18,10 +20,18 @@ export default function Home() {
   const [error, setError]             = useState(null);
   const [page, setPage]               = useState(1);
   const [totalPages, setTotalPages]   = useState(1);
+  const [slowLoading, setSlowLoading] = useState(false);
 
   // 현재 요청 중인 카테고리를 추적 (race condition 방지)
   const activeCatRef = useRef('all');
   const loadMoreRef  = useRef(null);
+
+  // 5초 이상 로딩 시 안내 메시지
+  useEffect(() => {
+    if (!loading) { setSlowLoading(false); return; }
+    const t = setTimeout(() => setSlowLoading(true), 5000);
+    return () => clearTimeout(t);
+  }, [loading]);
 
   // 카테고리 목록 로드
   useEffect(() => {
@@ -110,6 +120,19 @@ export default function Home() {
   return (
     <main className="max-w-6xl mx-auto px-4 py-6">
 
+      {/* 비로그인 사용자 로그인 유도 */}
+      {!user && (
+        <div className="mb-6 p-4 rounded-2xl bg-beige-200 dark:bg-navy-800 border border-beige-300 dark:border-navy-700 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-sm text-gray-700 dark:text-gray-300 text-center sm:text-left">
+            회원가입하면 카테고리 맞춤 설정, 인기뉴스 등 더 많은 기능을 이용할 수 있습니다.
+          </p>
+          <div className="flex gap-2 shrink-0">
+            <Link to="/register" className="btn-primary text-sm py-2 px-4">무료 회원가입</Link>
+            <Link to="/login" className="btn-secondary text-sm py-2 px-4">로그인</Link>
+          </div>
+        </div>
+      )}
+
       {/* 상단 광고 배너 */}
       <AdBanner slot="top-banner" format="leaderboard" className="mb-6 hidden md:block" />
 
@@ -158,6 +181,13 @@ export default function Home() {
                 ))
             }
           </div>
+
+          {/* 서버 웜업 안내 */}
+          {loading && slowLoading && (
+            <p className="text-center text-sm text-gray-400 dark:text-gray-500 mt-2">
+              서버를 깨우는 중입니다... 잠시만 기다려 주세요 ☕
+            </p>
+          )}
 
           {/* 뉴스 없음 */}
           {!loading && news.length === 0 && (

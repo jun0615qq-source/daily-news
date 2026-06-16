@@ -1,13 +1,12 @@
 import { Link } from 'react-router-dom';
 
-const LAST_UPDATED = '2026년 4월 17일';
+const LAST_UPDATED = '2026년 6월 16일';
 
 export default function Privacy() {
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-beige-100 dark:bg-navy-900">
       <div className="max-w-3xl mx-auto px-4 py-12">
 
-        {/* 헤더 */}
         <div className="mb-10">
           <Link to="/" className="text-sm text-beige-600 dark:text-navy-300 hover:underline mb-4 inline-block">
             ← 홈으로
@@ -108,13 +107,51 @@ export default function Privacy() {
           </Section>
 
           <Section title="7. 쿠키(Cookie) 및 분석 도구">
-            <p>
+            <p className="mb-3">
               서비스는 로그인 상태 유지를 위해 Firebase가 설정하는 세션 쿠키를 사용합니다.
               브라우저 설정에서 쿠키를 비활성화할 수 있으나, 일부 기능이 제한될 수 있습니다.
             </p>
           </Section>
 
-          <Section title="8. 개인정보 보호책임자">
+          <Section title="8. Google AdSense 및 제3자 광고">
+            <p className="mb-3">
+              본 서비스는 Google LLC가 제공하는 광고 서비스인 <strong>Google AdSense</strong>를 통해
+              광고를 게재합니다. Google AdSense는 이용자의 관심사에 맞는 맞춤 광고를 표시하기 위해
+              쿠키(Cookie) 및 웹 비콘(Web Beacon) 등을 사용합니다.
+            </p>
+            <Table
+              headers={['항목', '내용']}
+              rows={[
+                ['광고 제공사', 'Google LLC (Google AdSense)'],
+                ['쿠키 목적', '관심 기반 맞춤 광고 제공, 광고 노출 빈도 관리'],
+                ['수집 정보', '브라우저 유형, IP 주소, 방문 페이지 등 (익명 처리)'],
+                ['쿠키 관리', '브라우저 설정 또는 Google 광고 설정에서 조정 가능'],
+              ]}
+            />
+            <p className="mt-3">
+              Google의 쿠키 사용 방식 및 개인정보 처리에 대한 자세한 내용은{' '}
+              <a
+                href="https://policies.google.com/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-beige-600 dark:text-navy-300 underline"
+              >
+                Google 개인정보처리방침
+              </a>
+              을 참고하세요. 광고 개인화를 원하지 않으시면{' '}
+              <a
+                href="https://adssettings.google.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-beige-600 dark:text-navy-300 underline"
+              >
+                Google 광고 설정
+              </a>
+              에서 조정하실 수 있습니다.
+            </p>
+          </Section>
+
+          <Section title="9. 개인정보 보호책임자">
             <Table
               headers={['항목', '내용']}
               rows={[
@@ -127,7 +164,7 @@ export default function Privacy() {
             </p>
           </Section>
 
-          <Section title="9. 개인정보처리방침 변경">
+          <Section title="10. 개인정보처리방침 변경">
             <p>
               본 방침은 법령 또는 서비스 변경 시 사전 공지 후 개정됩니다.
               변경 시 시행 7일 전에 공지합니다.
